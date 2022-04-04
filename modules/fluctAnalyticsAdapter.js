@@ -87,8 +87,7 @@ const browsiEventListener = (event) => {
   const divId = event.slot.getSlotElementId();
   logInfo(cache.auctions, divId)
   if (isBrowsiId(divId)) {
-    const auction = find(Object.values(cache.auctions), auction =>
-      auction.adUnitCodes.includes(adUnitCode => adUnitCode === divId));
+    const auction = find(Object.values(cache.auctions), auction => auction.adUnitCodes.includes(divId));
     if (auction) sendMessage(auction.auctionId);
   }
 }
