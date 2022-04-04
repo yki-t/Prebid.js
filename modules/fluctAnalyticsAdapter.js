@@ -62,9 +62,9 @@ export const convertReplicatedAdUnit = (_adUnit, adUnits = $$PREBID_GLOBAL$$.adU
     try {
       /**
        * browsi枠は`adUnit.path`を持たない
-       * 共通のadUnitPathを持つ（複製元の）枠を探す
+       * 共通のadUnitPathを持つ（複製元の）枠を case-insensitive で探す
        */
-      const { analytics, code, mediaTypes: { banner: { name } } } = find(adUnits, adUnit => adUnitPath.match(new RegExp(`${adUnit.path}$`)));
+      const { analytics, code, mediaTypes: { banner: { name } } } = find(adUnits, adUnit => adUnitPath.match(new RegExp(`${adUnit.path}$`, 'i')));
       adUnit.analytics = analytics;
       adUnit._code = adUnit.code; /** 変換前: `browsi_ad_..` */
       adUnit.code = code;
@@ -85,10 +85,11 @@ export const convertReplicatedAdUnit = (_adUnit, adUnits = $$PREBID_GLOBAL$$.adU
 /** @type {(event: GptEvent) => void} */
 const browsiEventListener = (event) => {
   const divId = event.slot.getSlotElementId();
+  logInfo(cache.auctions, divId)
   if (isBrowsiId(divId)) {
     const auction = find(Object.values(cache.auctions), auction =>
-      auction.adUnitCodes.every(adUnitCode => adUnitCode === divId));
-    sendMessage(auction.auctionId);
+      auction.adUnitCodes.includes(adUnitCode => adUnitCode === divId));
+    if (auction) sendMessage(auction.auctionId);
   }
 }
 
