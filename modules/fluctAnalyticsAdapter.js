@@ -170,10 +170,10 @@ let fluctAnalyticsAdapter = Object.assign(
             timeout: false,
           });
           /** 複数の `BID_WON` イベントをまとめて送信する */
-          clearTimeout(cache.timeouts[auctionId]);
-          cache.timeouts[auctionId] = setTimeout(() => {
-            sendMessage(auctionId);
-          }, Math.min(config.getConfig('timeoutBuffer') || 400, 400));
+          // clearTimeout(cache.timeouts[auctionId]);
+          // cache.timeouts[auctionId] = setTimeout(() => {
+          sendMessage(auctionId);
+          // }, Math.min(config.getConfig('timeoutBuffer') || 400, 400));
           break;
         }
         default:
